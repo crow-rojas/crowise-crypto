@@ -58,3 +58,5 @@ end
 # Rswag API and UI components
 gem "rswag-api"
 gem "rswag-ui"
+
+gem "dockerfile-rails", ">= 1.7", :group => :development
