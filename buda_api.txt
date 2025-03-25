@@ -1,0 +1,473 @@
+Introduction
+An example using the requests library
+
+import requests # install requests with `pip install requests`
+
+url = 'https://www.buda.com/api/v2/markets/eth-btc/ticker'
+response = requests.get(url)
+print(response.json())
+Like many other cryptocurrency exchanges, Buda.com's API has public endpoints and private endpoints:
+
+Public endpoints don't require authentication to use, making them public information. In fact, you can use them directly from your browser by adding .json to the end of the path. For example, try the following URL: https://www.buda.com/api/v2/markets/eth-btc/ticker.json
+
+Private endpoints require authentication, so in order to use them, you need to obtain both an API-KEY and an API-SECRET for your account. For this step, you need to log in to buda.com and go to the Configuración section, where you will find the API Keys tab and an option to create new API-KEYS with various levels of permission and expiry dates.
+
+Our API's URLs usually have this format
+
+https://www.buda.com/api/[version]/[path].[format]
+
+Where currently:
+
+Parameter	Value
+version	v2
+format	json
+Open Source Libraries
+Clients
+If you want to save some time, these are some clients for our API in various languages.
+
+These libraries are not official nor have been tested by us, but we have spoken to their creators who seem like good people 😉.
+
+Language	Link
+Go	https://github.com/niedbalski/go-buda
+Java	https://github.com/FeroSalgado/java-surbtc-api
+Java	https://github.com/daplay/jsurbtc
+Javascript	https://github.com/ajunge/buda-promise
+Python	https://github.com/delta575/trading-api-wrappers
+Python	https://github.com/CriptoPagos/surbtc-api-client-python
+If you want to share your own library with the community, contact us at soporte@buda.com.
+
+Other libraries
+CCXT is a very useful library that facilitates connecting to over 100 exchanges (including Buda ❤️) using Python, Javascript, or PHP. Yes, really.
+
+Public Endpoints
+Markets
+import requests
+
+url = 'https://www.buda.com/api/v2/markets'
+response = requests.get(url)
+print(response.json())
+This call returns an object with the following format:
+
+{
+  "markets": [
+    {
+      "id": "BTC-CLP",
+      "name": "btc-clp",
+      "base_currency": "BTC",
+      "quote_currency": "CLP",
+      "minimum_order_amount": ["0.001", "BTC"],
+      "taker_fee": "0.8",
+      "maker_fee": "0.4",
+      "max_orders_per_minute":100,
+      "maker_discount_percentage":"0.0",
+      "taker_discount_percentage":"0.0",
+      "maker_discount_tiers": {},
+      "taker_discount_tiers": {},
+    },
+    {
+      "id": "BTC-COP",
+      "name": "btc-cop",
+      "base_currency": "BTC",
+      "quote_currency": "COP",
+      "minimum_order_amount": ["0.001", "BTC"],
+      "taker_fee": "0.8",
+      "maker_fee": "0.4",
+      "max_orders_per_minute":100,
+      "maker_discount_percentage":"0.0",
+      "taker_discount_percentage":"0.0",
+      "maker_discount_tiers":{
+        "*": 0.5
+      },
+      "taker_discount_tiers":{
+        "*": 0.0,
+        "6": 0.2,
+        "7": 0.3
+      }
+    },
+    ...
+  ]
+}
+
+Obtain market details
+
+import requests
+
+market_id = 'btc-clp'
+url = f'https://www.buda.com/api/v2/markets/{market_id}'
+response = requests.get(url)
+print(response.json())
+This call returns an object with the following format:
+
+{
+  "market": {
+    "id": "BTC-CLP",
+    "name": "btc-clp",
+    "base_currency": "BTC",
+    "quote_currency": "CLP",
+    "minimum_order_amount": ["0.001", "BTC"],
+    "taker_fee": "0.8",
+    "maker_fee": "0.4",
+    "max_orders_per_minute":100,
+    "maker_discount_percentage":"0.0",
+    "taker_discount_percentage":"0.0",
+    "maker_discount_tiers":{
+        "*": 0.5
+      },
+      "taker_discount_tiers":{
+        "*": 0.0,
+        "6": 0.2,
+        "7": 0.3
+      }
+  }
+}
+
+A given market separates the buys and sells by currency. In each market, the base_currency is bought or sold, and the quote_currency is used to pay for these trades. We use these two currencies to identify each market.
+
+For example, the market in which bitcoins (BTC) are traded against dollars (USDC) is: btc-usdc.
+
+HTTP Request
+
+GET /markets
+
+GET /markets/<market_id>
+
+Path Parameters
+
+Parameter	Description
+market_id	(optional) The market ID (for example: btc-clp, eth-btc, etc).
+You can obtain a complete list of all markets by leaving this parameter blank.
+Response Details
+
+Key	Type	Description
+id	[string]	Market identifier
+name	[string]	Market name
+base_currency	[string]	Currency traded
+quote_currency	[string]	Currency paid
+minimum_order_amount	[amount, currency]	Minimumm order amount accepted
+taker_fee	[amount]	Fee paid by a taker order
+maker_fee	[amount]	Fee paid by a maker order
+max_orders_per_minute	[amount]	Trading Rate Limit for given market
+maker_discount_percentage	[string]	Maker discount for given market
+taker_discount_percentage	[string]	Taker discount for given market
+maker_discount_tiers	[hash]	Maker discount for given market by tiers
+taker_discount_tiers	[hash]	Taker discount for given market by tiers
+Transacted Volume
+import requests
+
+market_id = 'btc-clp'
+url = f'https://www.buda.com/api/v2/markets/{market_id}/volume'
+response = requests.get(url)
+print(response.json())
+This call returns an object with the following format:
+
+{
+  "volume": {
+    "ask_volume_24h": ["4.97241513", "BTC"],
+    "ask_volume_7d": ["43.15391694", "BTC"],
+    "bid_volume_24h": ["8.03642037", "BTC"],
+    "bid_volume_7d": ["35.77704356", "BTC"],
+    "market_id": "BTC-CLP"
+  }
+}
+This endpoint accesses all the transacted volume in a given market, where ask_volume is the volume traded in sell orders, while bid_volume is the volume traded by buy orders.
+
+HTTP Request
+
+GET /markets/<market_id>/volume
+
+Response Details
+
+Key	Type	Description
+ask_volume_24h	[amount, currency]	Amount transacted in sell orders in the last 24 hours
+ask_volume_7d	[string]	Amount transacted in sell orders in the last 7 days
+bid_volume_24h	[amount, currency]	Amount transacted in buy orders in the last 24 hours
+bid_volume_7d	[string]	Amount transacted in buy orders in the last 7 days
+market_id	[string]	Requested market ID
+Ticker
+import requests
+
+market_id = 'btc-clp'
+url = f'https://www.buda.com/api/v2/markets/{market_id}/ticker'
+response = requests.get(url)
+print(response.json())
+This call returns an object with the following format:
+
+{
+  "ticker": {
+    "last_price": ["879789.0", "CLP"],
+    "market_id": "BTC-CLP",
+    "max_bid": ["879658.0", "CLP"],
+    "min_ask": ["876531.11", "CLP"],
+    "price_variation_24h": "0.005",
+    "price_variation_7d": "0.1",
+    "volume": ["102.0", "BTC"]
+  }
+}
+This endpoint gives access to the current state of a given market. This response includes the best buy and sell price currently available (bid and ask) and the last traded price (last_price) for the selected market. There is also information related to the daily volume and price change.
+
+HTTP Request
+
+GET /markets/<market_id>/ticker
+
+Path Parameters
+
+Parameter	Description
+market_id	The market ID (for example: btc-clp, eth-btc, etc).
+You can obtain a complete list of all markets by calling the Markets endpoint.
+Response Details
+
+Key	Type	Description
+market_id	[currency]	Requested market ID
+last_price	[amount, currency]	Last traded price
+min_ask	[amount, currency]	Min sell price
+max_bid	[amount, currency]	Max buy price
+volume	[amount, currency]	Transacted volume in the last 24 hours
+price_variation_24h	[float]	Percentage variation of price in the last 24 hours
+price_variation_7d	[float]	Percentage variation of price in the last 7 days
+All Tickers
+import requests
+
+url = f'https://www.buda.com/api/v2/tickers'
+response = requests.get(url)
+print(response.json())
+This call returns an object with the following format:
+
+{
+  "tickers": [
+    {"market_id":"BTC-CLP","price_variation_24h":"0.001","price_variation_7d":"-0.004","last_price":["14525279.0","CLP"]},
+    {"market_id":"ETH-CLP","price_variation_24h":"-0.002","price_variation_7d":"0.024","last_price":["1105000.0","CLP"]},
+    ...
+  ]
+}
+This endpoint gives access to the current state of all markets. This response includes information related to the daily and weekly volume, as well as the last traded price (last_price) for each market.
+
+HTTP Request
+
+GET /tickers
+
+Response Details
+
+Key	Type	Description
+market_id	[currency]	Requested market ID
+last_price	[amount, currency]	Last traded price
+price_variation_24h	[float]	Percentage variation of price in the last 24 hours
+price_variation_7d	[float]	Percentage variation of price in the last 7 days
+Order Book
+import requests
+
+market_id = 'btc-clp'
+url = f'https://www.buda.com/api/v2/markets/{market_id}/order_book'
+response = requests.get(url)
+print(response.json())
+This call returns an object with the following format:
+
+{
+  "order_book": {
+    "asks": [
+      ["836677.14", "0.447349"],
+      ["837462.23", "1.43804963"],
+      ["837571.89", "1.41498541"],
+      ["837597.23", "0.13177617"],
+      ["837753.25", "1.40724154"],
+      ["837858.51", "1.40988433"],
+      ["837937.0", "1.46619702"],
+      ["838000.57", "1.4527277"],
+      ["838305.78", "0.8317892"],
+      ...
+    ],
+    "bids": [
+      ["821580.0", "0.25667389"],
+      ["821211.0", "0.27827307"],
+      ["819882.39", "1.40003128"],
+      ["819622.99", "1.40668862"],
+      ["819489.9", "1.41736995"],
+      ["818942.2", "1.41001753"],
+      ["818820.29", "0.93677863"],
+      ["816879.83", "1.44022295"],
+      ...
+    ]
+  }
+}
+Get a list of all the limit buy and sell orders currently placed in a given market.
+
+HTTP Request
+
+GET /markets/<market_id>/order_book
+
+Path Parameters
+
+Parameter	Description
+market_id	The market ID (for example: btc-clp, eth-btc, etc).
+You can obtain a complete list of all markets by calling the Markets endpoint.
+Response Details
+
+Key	Type	Description
+asks	[price, amount]	Array with sell orders
+bids	[price, amount]	Array with buy orders
+Trade History
+import time
+import requests
+
+market_id = 'btc-clp'
+url = f'https://www.buda.com/api/v2/markets/{market_id}/trades'
+response = requests.get(url, params={
+    'timestamp': int(time.time()) - 60 * 60 * 24 * 7,
+    'limit': 50,
+})
+print(response.json())
+This call returns an object with the following format:
+
+{
+  "trades": {
+    "timestamp": "1476905551698",
+    "last_timestamp": "1476380738941",
+    "market_id": "BTC-CLP",
+    "entries": [
+      ["1476905551687", "0.00984662", "435447.12", "buy"],
+      ["1476905551676", "3.01572553", "435283.3", "buy"],
+      ...
+    ]
+  }
+}
+Get a list of all recent trades in a given market.
+
+HTTP Request
+
+GET markets/<market_id>/trades
+
+Path Parameters
+
+Parameter	Description
+market_id	The market ID (for example: btc-clp, eth-btc, etc).
+You can obtain a complete list of all markets by calling the Markets endpoint.
+URL Parameters
+
+Included at the end of the URL For example: GET /markets/BTC-CLP/trades?timestamp=1502472564
+
+Parameter	Description
+timestamp	(optional) Unix timestamp indicating trade to request
+limit	(optional) Amount of trades requested [default: 50, max: 100]
+Response Details
+
+Key	Type	Description
+entries	[timestamp, amount, price, direction]	Array with transaction history
+timestamp	[timestamp]	Most recent Unix timestamp for the given response
+last_timestamp	[timestamp]	Least recent Unix timestamp for the given response
+market_id	[currency]	Market ID being requested
+If you want to access a broader range of time than what is available, you can create multiple requests using the last_timestamp and timestamp URL parameter.
+Simulate Orders
+import requests
+
+market = 'btc-clp'
+url = f'https://www.buda.com/api/v2/markets/{market}/quotations'
+response = requests.post(url, json={
+    'type': 'bid_given_size',
+    'amount': 1,
+})
+print(response.json())
+This call returns an object with the following format:
+
+{
+  "quotation": {
+    "amount": ["1.0", "BTC"],
+    "base_balance_change": ["0.99200003", "BTC"],
+    "base_exchanged": ["1.0", "BTC"],
+    "fee": ["0.00799997", "BTC"],
+    "incomplete": false,
+    "limit": null,
+    "order_amount": ["1.0", "BTC"],
+    "quote_balance_change": ["-4872696.01", "CLP"],
+    "quote_exchanged": ["4872696.01", "CLP"],
+    "type": "bid_given_size"
+  }
+}
+Get a simulated quote for an order in a given market using the current order book.
+
+ This endpoint uses the current state of the order book at the time of the request. Since the order book is constantly changing is it not possible to guarantee that an order can be placed at the indicated values. The response should be considered only as an estimation.
+Quote types
+
+This endpoint can simulate many different types of quotes.
+
+For this, you can choose a specific market for the simulation, where our market IDs are in the <base_currency>-<quote_currency> format (we will use the eth-btc market as an example). You can simulate what a buy or sell order would be for a certian amount of the base_currency or quote_currency. (If you want more detail about what is a buy or sell order you con go check My Orders)
+
+For the simulation, you need to choose one of the following types and send it as the type payload parameter.
+
+Quote type	Description
+bid_given_size or bid_given_earned_base	Simulates a buy order to receive a certain amount of base_currency (for example: How much btc is requiered to obtain a certain amount of eth?)
+bid_given_value or bid_given_spent_quote	Simulates a buy order to spend a certain amount of quote_currency (for example: How much eth will I receive if I buy a certain amount of btc?)
+ask_given_size or ask_given_spent_base	Simulates a sell order to spend a certain amount of base_currency (for example: How much btc would I receive if I sell a certain amount of eth?)
+ask_given_value or ask_given_earned_quote	Simulates a sell order to receive a certain amount of quote_currency (for example: How much eth is requiered to obtain a certain amount of btc?)
+HTTP Request
+
+POST '/markets/<market_id>/quotations
+
+Path Parameters
+
+Parameter	Description
+market_id	The market ID (for example: btc-clp, eth-btc, etc).
+You can obtain a complete list of all markets by calling the Markets endpoint.
+Request Payload
+
+Key	Required	Description
+type	Yes	Quote type being requested (see previous table)
+amount	Yes	Amount to simulate quote (represents base_currency or quote_currency) depending on the type parameter
+limit	No	Price requested for the currency in which the amount parameter is expressed in
+Response Details
+
+Key	Type	Description
+amount	[amount, currency]	The amount value sent in the payload.
+base_balance_change	[amount, currency]	How much your base_currency balance would change after fees. This can be either positive or negative.
+base_exchanged	[amount, currency]	Total base_currency amount that would be traded. This is always positive.
+fee	[amount, currency]	Fee charged for trade.
+incomplete	[boolean]	Indicates whether or not your simulated order would be completely filled given current market conditions (order book and your current balance).
+limit	[amount, currency]	The limit value sent in the payload.
+order_amount	[amount, currency]	The same value as base_exchanged.
+quote_balance_change	[amount, currency]	How much your quote_currency balance would change after fees. This can be either positive or negative.
+quote_exchanged	[amount, currency]	Total quote_currency amount that would be traded. This is always positive.
+type	[string]	Quote type requested.
+About fee calculations (fee)
+
+Keep in mind that the fee charged for each trade is dependant on the monthly volume traded by each user.
+If you request this endpoint without authentication then the fee displayed will corresponf to the highest fee for that market.
+If you would like to simulate orders considering your account's corresponding fee then make the request authenticated.
+Depending on the limit payload value sent it can occur that part of the order would be executed immediately as a market order, and the rest would be placed as a limit order.
+In the case part of the simulated order is executed immediately as a market order, the corresponding fee would be all the market order fee for the amount immediately executed + the corresponding fee for the remaining limit order that would be placed.
+Deposit/Withdrawal Fees
+import requests
+
+currency = 'btc'
+transaction_type = 'withdrawal'
+url = f'https://www.buda.com/api/v2/currencies/{currency}/fees/{transaction_type}'
+response = requests.get(url)
+print(response.json())
+This call returns an object with the following format:
+
+{
+  "fee": {
+    "name": "withdrawal",
+    "percent": 0,
+    "base": ["0.00000015", "BTC"]
+  }
+}
+Provides all the related fees to the deposit or withdrawal of a given currency.
+
+Keep in mind:
+
+These costs do not come from Buda, they are charged by the network of the given currency to execute a transaction. For example, the fee required to have a Bitcoin transaction included in the following 3 blocks.
+Some fiat currencies may incur a deposit/withdrawal fee.
+In case of making a deposit, it is your responsibility to include the necessary transaction fee for it to be confirmed in the corresponding network.
+HTTP Request
+
+GET /currencies/<currency>/fees/<transaction_type>
+
+Path Parameters
+
+Parameter	Description
+currency	Acronym of the currency being requested
+transaction_type	Transaction type. It can be either deposit or withdrawal
+Response Details (JSON)
+
+Key	Type	Description
+name	[string]	Transaction type
+percent	[number]	Variable cost per transaction (percantage)
+base	[amount, currency]	Fixed cost per transaction

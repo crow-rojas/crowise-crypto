@@ -44,4 +44,17 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+  
+  # RSpec testing framework
+  gem "rspec-rails", "~> 7.0.0"
+  
+  # HTTP mocking for tests
+  gem "webmock"
+  
+  # Rswag for API documentation
+  gem "rswag-specs"
 end
+
+# Rswag API and UI components
+gem "rswag-api"
+gem "rswag-ui"
