@@ -1,27 +1,13 @@
-# fly.toml app configuration file generated for crowise-cripto on 2025-03-25T17:03:17-03:00
+# fly.toml app configuration file generated for crowise-crypto on 2025-03-25T17:26:05-03:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'crowise-cripto'
+app = 'crowise-crypto'
 primary_region = 'gru'
 console_command = '/rails/bin/rails console'
 
 [build]
-
-[env]
-  DATABASE_URL = 'sqlite3:///data/production.sqlite3'
-  PORT = '8080'
-
-[processes]
-  app = './bin/rails server'
-
-[[mounts]]
-  source = 'data'
-  destination = '/data'
-  auto_extend_size_threshold = 80
-  auto_extend_size_increment = '1GB'
-  auto_extend_size_limit = '10GB'
 
 [http_service]
   internal_port = 8080

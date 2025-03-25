@@ -1,0 +1,49 @@
+
+test/test_helper.rb,114
+module ActiveSupportActiveSupport5,0
+  class TestCaseTestCase6,0
+  class TestCaseActiveSupport::TestCase6,0
+
+app/models/application_record.rb,67
+class ApplicationRecord < ActiveRecord::BaseApplicationRecord1,0
+
+app/jobs/application_job.rb,58
+class ApplicationJob < ActiveJob::BaseApplicationJob1,0
+
+app/services/buda_api_client.rb,312
+module BudaApiClientBudaApiClient3,0
+    def marketsmarkets11,0
+    def ticker(market_id)ticker23,0
+    def available_marketsavailable_markets31,0
+    def available_cryptocurrenciesavailable_cryptocurrencies38,0
+    def fiat_currenciesfiat_currencies45,0
+      def get_request(path)get_request57,0
+
+app/services/currency_converter.rb,372
+class CurrencyConverterCurrencyConverter6,0
+    def convert(source_currency, target_currency, amount)convert22,0
+    def validate_currencies(source_currency, target_currency)validate_currencies46,0
+    def find_best_conversion(source_currency, target_currency, amount, cryptos)find_best_conversion71,0
+    def market_exists?(crypto, currency)market_exists?106,0
+
+app/controllers/application_controller.rb,78
+class ApplicationController < ActionController::APIApplicationController1,0
+
+app/controllers/api/v1/conversions_controller.rb,469
+module ApiApi1,0
+  module V1V12,0
+  module V1Api::V12,0
+    class ConversionsController < ApplicationControllerConversionsController3,0
+    class ConversionsController < ApplicationControllerApi::V1::ConversionsController3,0
+      def convertconvert22,0
+        def validate_params(source_currency, target_currency, amount)validate_params50,0
+        def render_error(error)render_error65,0
+        def render_bad_request(error)render_bad_request75,0
+
+app/mailers/application_mailer.rb,67
+class ApplicationMailer < ActionMailer::BaseApplicationMailer1,0
+
+config/application.rb,170
+module CrowiseCriptoCrowiseCripto9,0
+  class Application < Rails::ApplicationApplication10,0
+  class Application < Rails::ApplicationCrowiseCripto::Application10,0

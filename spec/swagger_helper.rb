@@ -25,6 +25,10 @@ RSpec.configure do |config|
       paths: {},
       servers: [
         {
+          url: 'https://crowise-crypto.fly.dev',
+          description: 'Production server'
+        },
+        {
           url: 'http://localhost:3000',
           description: 'Development server'
         }
