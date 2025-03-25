@@ -49,11 +49,11 @@ module Api
         # @return [nil] If validation passes
         def validate_params(source_currency, target_currency, amount)
           if source_currency.blank? || target_currency.blank? || amount.blank?
-            raise ArgumentError, 'Missing required parameters: source_currency, target_currency, and amount are required'
+            raise ArgumentError, "Missing required parameters: source_currency, target_currency, and amount are required"
           end
 
           unless amount.to_s.match?(/\A\d+(\.\d+)?\z/)
-            raise ArgumentError, 'Amount must be a valid number'
+            raise ArgumentError, "Amount must be a valid number"
           end
         end
 

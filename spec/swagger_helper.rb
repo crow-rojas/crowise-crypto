@@ -38,7 +38,7 @@ RSpec.configure do |config|
               target_currency: { type: 'string', description: 'Target currency code (CLP, PEN, COP)' },
               amount: { type: 'number', format: 'float', description: 'Amount in source currency to convert' }
             },
-            required: ['source_currency', 'target_currency', 'amount']
+            required: [ 'source_currency', 'target_currency', 'amount' ]
           },
           conversion_response: {
             type: 'object',

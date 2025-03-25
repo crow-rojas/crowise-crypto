@@ -22,7 +22,7 @@ RSpec.describe BudaApiClient do
         status: 200,
         body: {
           ticker: {
-            last_price: ["1000000.0", "CLP"],
+            last_price: [ "1000000.0", "CLP" ],
             market_id: "BTC-CLP"
           }
         }.to_json,

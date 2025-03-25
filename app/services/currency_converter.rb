@@ -1,7 +1,7 @@
-require 'net/http'
-require 'json'
+require "net/http"
+require "json"
 
-# Service that handles currency conversion between fiat currencies 
+# Service that handles currency conversion between fiat currencies
 # using cryptocurrencies as intermediaries
 class CurrencyConverter
   class << self
@@ -26,9 +26,9 @@ class CurrencyConverter
       return { amount: amount, intermediary: nil } if source_currency == target_currency
 
       cryptos = BudaApiClient.available_cryptocurrencies
-      
+
       best_conversion = find_best_conversion(source_currency, target_currency, amount, cryptos)
-      
+
       {
         amount: best_conversion[:amount],
         intermediary: best_conversion[:intermediary]
@@ -45,11 +45,11 @@ class CurrencyConverter
     # @raise [ArgumentError] If either currency is not in the list of supported fiat currencies
     def validate_currencies(source_currency, target_currency)
       valid_currencies = BudaApiClient.fiat_currencies
-      
+
       unless valid_currencies.include?(source_currency)
         raise ArgumentError, "Invalid source currency: #{source_currency}. Valid options are: #{valid_currencies.join(', ')}"
       end
-      
+
       unless valid_currencies.include?(target_currency)
         raise ArgumentError, "Invalid target currency: #{target_currency}. Valid options are: #{valid_currencies.join(', ')}"
       end
@@ -81,11 +81,11 @@ class CurrencyConverter
         buy_ticker = BudaApiClient.ticker(buy_market.downcase)
         sell_ticker = BudaApiClient.ticker(sell_market.downcase)
 
-        buy_price = buy_ticker['last_price'][0].to_f
-        sell_price = sell_ticker['last_price'][0].to_f
+        buy_price = buy_ticker["last_price"][0].to_f
+        sell_price = sell_ticker["last_price"][0].to_f
 
         crypto_amount = amount / buy_price
-        
+
         converted_amount = crypto_amount * sell_price
 
         if converted_amount > best_amount

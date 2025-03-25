@@ -22,7 +22,7 @@ RSpec.describe 'Conversions API', type: :request do
         status: 200,
         body: {
           ticker: {
-            last_price: ["1000000.0", "CLP"],
+            last_price: [ "1000000.0", "CLP" ],
             market_id: "BTC-CLP"
           }
         }.to_json,
@@ -34,7 +34,7 @@ RSpec.describe 'Conversions API', type: :request do
         status: 200,
         body: {
           ticker: {
-            last_price: ["10000.0", "PEN"],
+            last_price: [ "10000.0", "PEN" ],
             market_id: "BTC-PEN"
           }
         }.to_json,
@@ -46,7 +46,7 @@ RSpec.describe 'Conversions API', type: :request do
         status: 200,
         body: {
           ticker: {
-            last_price: ["100000.0", "CLP"],
+            last_price: [ "100000.0", "CLP" ],
             market_id: "ETH-CLP"
           }
         }.to_json,
@@ -58,7 +58,7 @@ RSpec.describe 'Conversions API', type: :request do
         status: 200,
         body: {
           ticker: {
-            last_price: ["1100.0", "PEN"],
+            last_price: [ "1100.0", "PEN" ],
             market_id: "ETH-PEN"
           }
         }.to_json,
@@ -73,7 +73,7 @@ RSpec.describe 'Conversions API', type: :request do
       operationId 'convertCurrency'
       consumes 'application/json'
       produces 'application/json'
-      
+
       parameter name: :conversion_params, in: :body, schema: { '$ref' => '#/components/schemas/conversion_request' }
 
       response '200', 'Currency converted successfully' do

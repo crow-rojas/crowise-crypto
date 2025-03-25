@@ -22,7 +22,7 @@ RSpec.describe CurrencyConverter do
         status: 200,
         body: {
           ticker: {
-            last_price: ["1000000.0", "CLP"],
+            last_price: [ "1000000.0", "CLP" ],
             market_id: "BTC-CLP"
           }
         }.to_json,
@@ -34,7 +34,7 @@ RSpec.describe CurrencyConverter do
         status: 200,
         body: {
           ticker: {
-            last_price: ["10000.0", "PEN"],
+            last_price: [ "10000.0", "PEN" ],
             market_id: "BTC-PEN"
           }
         }.to_json,
@@ -46,7 +46,7 @@ RSpec.describe CurrencyConverter do
         status: 200,
         body: {
           ticker: {
-            last_price: ["100000.0", "CLP"],
+            last_price: [ "100000.0", "CLP" ],
             market_id: "ETH-CLP"
           }
         }.to_json,
@@ -58,7 +58,7 @@ RSpec.describe CurrencyConverter do
         status: 200,
         body: {
           ticker: {
-            last_price: ["1100.0", "PEN"],
+            last_price: [ "1100.0", "PEN" ],
             market_id: "ETH-PEN"
           }
         }.to_json,
@@ -73,7 +73,7 @@ RSpec.describe CurrencyConverter do
         # CLP -> BTC -> PEN: 10000 CLP -> 0.01 BTC -> 100 PEN
         # CLP -> ETH -> PEN: 10000 CLP -> 0.1 ETH -> 110 PEN (better)
         result = CurrencyConverter.convert("CLP", "PEN", 10000)
-        
+
         expect(result[:amount]).to eq(110.0)
         expect(result[:intermediary]).to eq("ETH")
       end
@@ -82,7 +82,7 @@ RSpec.describe CurrencyConverter do
     context 'when source and target are the same' do
       it 'returns the same amount' do
         result = CurrencyConverter.convert("CLP", "CLP", 10000)
-        
+
         expect(result[:amount]).to eq(10000.0)
         expect(result[:intermediary]).to be_nil
       end

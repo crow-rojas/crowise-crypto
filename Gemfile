@@ -44,13 +44,13 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
-  
+
   # RSpec testing framework
   gem "rspec-rails", "~> 7.0.0"
-  
+
   # HTTP mocking for tests
   gem "webmock"
-  
+
   # Rswag for API documentation
   gem "rswag-specs"
 end
@@ -59,4 +59,4 @@ end
 gem "rswag-api"
 gem "rswag-ui"
 
-gem "dockerfile-rails", ">= 1.7", :group => :development
+gem "dockerfile-rails", ">= 1.7", group: :development
