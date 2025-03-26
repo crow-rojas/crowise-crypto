@@ -46,7 +46,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 
   # RSpec testing framework
-  gem "rspec-rails", "~> 7.0.0"
+  gem "rspec-rails", "~> 7.1.1"
 
   # HTTP mocking for tests
   gem "webmock"
